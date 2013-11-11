@@ -1,0 +1,15 @@
+var routing = require("./routing/routing");
+var restify = require("restify");
+var service = restify.createServer();
+service.use(restify.acceptParser(service.acceptable));
+service.use(restify.authorizationParser());
+service.use(restify.dateParser());
+service.use(restify.queryParser());
+service.use(restify.bodyParser());
+service.use(restify.fullResponse());
+service.use(restify.CORS());
+require("./config").installDB();
+routing.install(service);
+service.listen(9999);
+console.log("api server ready.");
+console.log("port : ", 9999);
