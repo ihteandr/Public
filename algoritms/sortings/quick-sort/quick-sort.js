@@ -1,6 +1,7 @@
 /**
  * Created by Fujitsu on 6/5/2014.
  */
+
 function swap(arr, first, second){
     var temp = arr[first];
     arr[first] = arr[second];
