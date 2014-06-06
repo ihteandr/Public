@@ -18,4 +18,5 @@ function bubble_sorting(arr){
             }
         }
     }
+    return arr;
 }
