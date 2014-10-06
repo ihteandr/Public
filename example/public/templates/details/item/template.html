@@ -1,0 +1,65 @@
+    <ul class="header">
+        <li class="cell changelist-build">
+            <a class="link" ng-class="{active:!checkShowProgress()}" href="#/details/{{name}}" ng-if="state != 'Pending'">{{name}}</a>
+            <span ng-if="state == 'Pending'">{{name}}</span>
+        </li>
+        <li class="cell owner"><span>{{owner}}</span></li>
+        <li class="cell time-started"><span>{{timeStarted}}</span></li>
+        <li class="cell state"><span>{{state}}</span></li>
+        <li ng-if="checkShowProgress()" class="cell metrics">
+            <ul details-item-progress class="progress"
+                value="metrics.progress"  status="metrics.status"></ul>
+        </li>
+        <li ng-if="checkShowProgress()" class="cell build">
+            <ul details-item-progress progress class="progress"
+                value="build.progress" status="build.status"></ul>
+        </li>
+        <li ng-if="checkShowProgress()" class="cell unit-tests">
+            <ul details-item-progress class="progress"
+                value="unitTests.progress" status="unitTests.status"></ul>
+        </li>
+        <li ng-if="checkShowProgress()" class="cell functional-tests">
+            <ul details-item-progress class="progress"
+                value="functionalTests.progress" status="functionalTests.status" ></ul>
+        </li>
+    </ul>
+    <div ng-if="checkOpen()" class="panels">
+        <div details-item-metrics data="metrics" ng-if="metrics.status !== 'pending'"
+             class="metrics-panel {{metrics.status}}"></div>
+        <div details-item-build data="build" ng-if="build.status !== 'pending'"
+             class="build-panel  {{build.status}}"></div>
+        <div details-item-chart data="unitTests" ng-if="unitTests.status !== 'pending'"
+             class="chart-panel  {{unitTests.status}}" text="'Unit Tests'"></div>
+        <div details-item-chart data="functionalTests" ng-if="functionalTests.status !== 'pending'"
+             class="chart-panel  {{functionalTests.status}}" text="'Functional Tests'"></div>
+        <div ng-if="state == 'Rejected'" class="controls-panel rejected">
+            <ul>
+                <li class="base-label">Result:</li>
+                <li class="state-label">Change Rejected</li>
+                <li class="name-label">Metrics Reduction</li>
+                <li class="button-label"><button>Find Issues</button></li>
+            </ul>
+        </div>
+        <div ng-if="state == 'Complete'" class="controls-panel complete">
+            <ul>
+                <li class="base-label">Result:</li>
+                <li class="name-label">Complete</li>
+                <li class="button-label">
+                    <button>Deploy</button>
+                    <span>to:</span><br/>
+                    <select>
+                        <option value="production">Production</option>
+                        <option value="development">Development</option>
+                    </select>
+                </li>
+            </ul>
+        </div>
+        <div ng-if="state == 'Accepted'" class="controls-panel accepted">
+            <ul>
+                <li class="base-label">Result:</li>
+                <li class="state-label">Change Accepted</li>
+                <li class="name-label">Auto-Merge</li>
+                <li class="button-label"><button>Merged Build</button></li>
+            </ul>
+        </div>
+    </div>

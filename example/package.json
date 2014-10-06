@@ -1,0 +1,9 @@
+{
+    "name": "example",
+    "version": "0.0.1",
+    "author": "Vladimir Ghukasyan <ghukasyan.vladimir@gmail.com>",
+    "dependencies":{
+        "express": "4.2.x",
+        "less":"*"
+    }
+}

@@ -1,0 +1,1 @@
+lessc -x public/css/all.less public/css/all.css && node builder/r.js -o public/app.build.js

@@ -1,0 +1,28 @@
+<article class="main">
+    <header>
+        <ul class="top header">
+            <li class="cell changelist-build">Changelist/Build</li>
+            <li class="cell owner">Owner</li>
+            <li class="cell time-started">Time started</li>
+            <li class="cell state">State</li>
+            <li class="cell metrics">Metrics</li>
+            <li class="cell build">Build</li>
+            <li class="cell unit-tests">Unit Tests</li>
+            <li class="cell functional-tests">Functional Tests</li>
+        </ul>
+    </header>
+    <section class="details" ng-repeat="item in items">
+        <div details-item
+             name="item.name"
+             owner="item.owner"
+             timestarted="item.timeStarted"
+             state="item.state"
+             metrics="item.metrics"
+             build="item.build"
+             unittests="item.unitTests"
+             functionaltests="item.functionalTests"
+             selected="item.selected"
+             class="{{item.state.toLowerCase()}}-row"></div>
+        </div>
+    </section>
+</article>
