@@ -1,0 +1,7 @@
+.navigation{
+	list-style-type: none;
+}
+.navigation li a{
+	color: blue;
+	cursor: pointer;
+}

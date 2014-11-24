@@ -1,0 +1,20 @@
+<html>
+	<head>
+		<title>Cloud Router Test</title>
+		<link href="base.css" rel='stylesheet' type='text/css'/>
+	</head>
+	<body>
+		<ul class="navigation">
+			<li><a cloud-href="/home">home</a></li>
+			<li><a cloud-href="/page">page</a></li>
+			<li><a cloud-href="/page/1">page 1</a></li>
+			<li><a cloud-href="/page/2">dpage 2</a></li>
+			<li><a cloud-href="/page/2/1">page 2/1</a></li>
+			<li><a cloud-href="/page/subpage">Callback no defined</a></li>
+			<li><a cloud-href="/no/defiend/path">no defined path</a></li>
+		</ul>
+		<div class="view"></div>
+		<script src="../cloud-router.js"></script>
+		<script src="script.js"></script>
+	</body>
+</html>
