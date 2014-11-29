@@ -1,0 +1,10 @@
+/***************************************************
+	Generic styles
+***************************************************/
+html,
+body {
+  font-family: 'Open Sans', sans-serif;
+  min-width: 1024px;
+  min-height: 700px;
+  overflow: hidden;
+}
