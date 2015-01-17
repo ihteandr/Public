@@ -1,0 +1,9 @@
+.login-error-message {
+  float: right;
+  color: red;
+}
+.lf-center {
+  margin-left: 33%;
+  margin-top: 150px;
+  margin-right: 33%;
+}

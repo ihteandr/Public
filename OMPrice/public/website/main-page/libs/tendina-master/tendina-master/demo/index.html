@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tendina plugin</title>
+
+  <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="css/demo.css">
+</head>
+  <body>
+    <ul class="dropdown">
+      <li>
+        <a class="snacks" href="#">Snacks</a>
+        <ul>
+          <li><a class="snickers" href="#">Snickers</a></li>
+        </ul>
+      </li>
+      <li>
+        <a class="drinks" href="#">Drinks</a>
+        <ul>
+          <li><a class="coke" href="#">Coca Cola</a></li>
+          <li><a class="fanta" href="#">Fanta</a></li>
+          <li><a class="cocktails" href="#">Cocktails</a>
+            <ul>
+              <li><a id="long-island" href="#">Long Island Ice Tea</a></li>
+              <li><a class="gin-lemon" href="#">Gin Lemon</a>
+              </li>
+              <li><a class="non-alcoholic" href="#">Non alcoholic</a>
+                <ul>
+                  <li><a href="#">With Milk</a>
+                    <ul>
+                      <li><a href="#">Almond Milk Cooler</a></li>
+                      <li><a id="deepest" href="#">Banana Milk Shake</a></li>
+                    </ul>
+                  </li>
+                  <li><a href="#">Almond Iced Coffee</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a class="meat" href="#">Meat</a>
+        <ul>
+          <li><a class="beef" href="#">Beef</a></li>
+          <li><a class="pork" href="#">Pork</a></li>
+        </ul>
+      </li>
+    </ul>
+
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="../dist/tendina.min.js"></script>
+    <script>
+      $('.dropdown').tendina({
+        // This is a setup made only
+        // to show which options you can use,
+        // it doesn't actually make sense!
+        animate: true,
+        speed: 500,
+        onHover: false,
+        hoverDelay: 300,
+        activeMenu: $('#deepest'),
+        openCallback: function(clickedEl) {
+          console.log('Hey dude!');
+        },
+        closeCallback: function(clickedEl) {
+          console.log('Bye dude!');
+        }
+      })
+    </script>
+  </body>
+</html>

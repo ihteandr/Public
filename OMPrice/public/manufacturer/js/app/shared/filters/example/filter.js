@@ -1,0 +1,1 @@
+define(["Class"],function(){return[function(){function n(n){return"example-"+n}return n}]});

@@ -1,0 +1,1 @@
+define(["Angular","./HomeController"],function(o,e){var r=o.module("home",[]);return r.controller("homeController",e),r});

@@ -1,0 +1,1 @@
+define("BaseController",["Class"],function(e){var n=e.extend({$scope:null,init:function(e){this.$scope=e,this.defineListeners(),this.defineScope()},defineListeners:function(){this.$scope.$on("$destroy",this.destroy.bind(this))},defineScope:function(){},destroy:function(){}});return n.$inject=["$scope"],n});

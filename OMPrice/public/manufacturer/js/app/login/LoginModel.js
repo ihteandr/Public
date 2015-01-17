@@ -1,0 +1,1 @@
+define(["BaseModel","Class"],function(n,e){var i=n.extend({_service:null,init:function(){},tryLogin:function(n){return this._service.tryLogin(n)}}),t=e.extend({instance:new i,$get:["LoginService",function(n){return this.instance._service=n,this.instance}]});return t});

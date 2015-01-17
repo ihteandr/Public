@@ -5,5 +5,10 @@
     "dependencies":{
         "express": "4.2.x",
         "less":"*"
+    },
+    "scripts": {
+        "start": "node server.js",
+        "predeploy": "echo im about to deploy",
+        "postdeploy": "echo ive deployed"
     }
 }

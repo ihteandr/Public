@@ -1,0 +1,1 @@
+define(["Angular","./ProductInfoService","./ProductInfoModel","./ProductInfoController","./directives/directives"],function(o,r,e,n,t){var c=o.module("productInfo",[]);return c.service("ProductInfoService",r),c.provider("ProductInfoModel",e),c.controller("productInfoController",n),t.initialize(c),c});

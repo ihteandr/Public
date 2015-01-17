@@ -1,0 +1,1 @@
+define(["BaseController"],function(e){var n=e.extend({init:function(e){this._super(e)}});return n.$inject=["$scope"],n});

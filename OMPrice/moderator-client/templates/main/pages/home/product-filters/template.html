@@ -1,0 +1,48 @@
+<button class="btn btn-success" ng-click="createProduct">Создать товар</button>
+<form onsubmit="return false">
+    <div class="form-group">
+        <label for="market">Рынок</label>
+        <select ng-model="selectedMarket" id="market" ng-options="market._id as market.name for market in markets">
+            <option value="">--Выберети Рынок--</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="section">Сегмент</label>
+        <select ng-model="selectedSection" id="section" ng-options="section._id as section.name for section in sections">
+            <option value="">--Выберете Сегмент--</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="category">Категория</label>
+        <select ng-model="selectedCategory" id="category" ng-options="category._id as category.name for category in categories">
+            <option value="">--Выберете Категорию--</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="family">Семья</label>
+        <select ng-model="selectedFamily" id="family" ng-options="family._id as family.name for family in families">
+            <option value="">--Выберете Семью--</option>
+        </select>
+    </div>
+</form>
+
+<form onsubmit="return false">
+    <div class="form-group">
+        <label for="country">Страна</label>
+        <select ng-model="selectedCountry" id="country" ng-options="country._id as country.name for country in countries">
+            <option value="">--Выберете Страну Производства--</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="brand">Товарная марка</label>
+        <select ng-model="selectedBrand" id="brand" ng-options="brand._id as brand.name for brand in brands">
+        <option value="">--Выберете Товарную Марку--</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="bulk">Вес/Обьем</label>
+        <select id="bulk">
+            <option>Вес/обьем</option>
+        </select>
+    </div>
+</form>

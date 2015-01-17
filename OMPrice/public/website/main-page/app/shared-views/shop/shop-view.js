@@ -1,0 +1,1 @@
+define(["marionette","text!./template/shop-template.html"],function(e,t){var a=e.ItemView.extend({template:t,tagName:"li"});return a});

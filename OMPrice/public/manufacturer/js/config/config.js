@@ -1,0 +1,1 @@
+define(["./interceptors/StatusCodeInterceptorService"],function(t){var e=function(e){e.config(["$httpProvider",function(e){e.interceptors.push(t)}])};return{setup:e}});

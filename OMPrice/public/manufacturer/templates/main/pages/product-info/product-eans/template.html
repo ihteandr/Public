@@ -1,0 +1,12 @@
+<div class="product-eans">
+    <ul>
+        <li ng-repeat="ean in eans">
+            <label>{{ean}}</label>
+            <span class="ean-remove" data-ean="{{ean}}" ng-click="removeEan($event)">×</span>
+        </li>
+        <li ng-repeat="ean in tmpEans" class="tmp-ean">
+            <label>{{ean}}</label>
+        </li>
+    </ul>
+    <button class="btn btn-default" ng-click="addEan($event)" id="addEan">Добавить EAN</button>
+</div>

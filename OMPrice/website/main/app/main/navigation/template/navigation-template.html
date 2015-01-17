@@ -1,0 +1,32 @@
+<div>
+    <div class="brand-filter">
+        <ul>
+            <% for(var b = 0, brand; brand = brands[b]; b++){ %>
+            <li><input type="checkbox" data-id="<%= brand._id %>" name="brands"/><label><%= brand.name %></label></li>
+            <% } %>
+        </ul>
+    </div>
+    <nav class="nav-markets">
+        <ul class="market-navigation">
+            <% for(var m = 0, m_len = markets.length; m < m_len; m++){var market = markets[m];%>
+                <li class="nav-market" data-market="<%= market._id %>">
+                    <a href="javascript:;" class="nav-link"><%= market.name %></a>
+                        <ul>
+                            <% for(var s = 0, s_len = market.sections.length; s < s_len; s++){var section = market.sections[s];%>
+                                <li class="nav-section" data-section="<%= section._id %>">
+                                    <a href="javascript:;" class="nav-link"><%= section.name %></a>
+                                        <ul>
+                                            <% for(var c = 0, c_len = section.categories.length; c < c_len; c++){var category = section.categories[c]; %>
+                                                <li class="nav-category" data-category="<%= category._id %>">
+                                                    <a href="#<%= market._id %>/<%= section._id %>/<%= category._id %>" class="nav-link"><%= category.name %></a>
+                                                </li>
+                                            <% } %>
+                                        </ul>
+                                </li>
+                            <% } %>
+                        </ul>
+                </li>
+            <% } %>
+        </ul>
+    </nav>
+</div>

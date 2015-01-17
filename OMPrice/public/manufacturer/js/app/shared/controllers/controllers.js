@@ -1,0 +1,1 @@
+define(["lodash","./modal/create/base/PopupCreateBaseController"],function(e,o){var n={popupCreateBaseController:o},r=function(o){e.each(n,function(e,n){o.controller(n,e)})};return{initialize:r}});

@@ -1,0 +1,1 @@
+define(["Class"],function(t){var n=t.extend({$http:null,init:function(t,n){this.$http=t,this.$q=n},tryLogin:function(t){var n=this.$q.defer(),e={headers:{"content-type":"application/json"}};return this.$http.post("/login",t,e).success(function(t){n.resolve(t)}).error(function(t){n.reject(t)}),n.promise}});return n.$inject=["$http","$q"],n});

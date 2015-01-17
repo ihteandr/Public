@@ -1,0 +1,15 @@
+<div class="jcarousel-wrapper">
+    <div class="jcarousel">
+        <ul>
+            <li ng-repeat="image in images" ng-class="{tempimage: image.temp}" class="span3">
+                <img src="{{'../'+image.path}}" class="img-thumbnail">
+            </li>
+        </ul>
+    </div>
+
+    <p class="jcarousel-pagination">
+
+    </p>
+</div>
+<div class="upload-images" new-images="newImages" upload-images>
+</div>

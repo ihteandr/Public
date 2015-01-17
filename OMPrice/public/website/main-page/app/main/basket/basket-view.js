@@ -1,0 +1,1 @@
+define(["marionette","app/store/collections/basket/collection","text!./template/basket-template.html"],function(e,t,o){var l=e.CompositeView.extend({template:o,collection:t});return l});

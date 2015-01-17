@@ -33,10 +33,10 @@
 		
 		function sessionLinkClickHandler(e){
 			var href = e.target.getAttribute("cloud-href");
-			navigate(href);
+			callCallbackz(href);
 		}
 		
-		function navigate(path){
+		function callCallback(path){
 			var keys = path.split("/"),
 				params = [];
 			//function, if route been not found

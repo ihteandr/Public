@@ -1,0 +1,1 @@
+define(["marionette","underscore","text!./template/product-template.html"],function(e,t,n){var r=e.ItemView.extend({template:function(e){return t.template(n)(e)},tabName:"div"});return r});

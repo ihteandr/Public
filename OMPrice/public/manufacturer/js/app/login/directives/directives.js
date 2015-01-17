@@ -1,0 +1,1 @@
+define(["lodash"],function(i){var n={},e=function(e){i.each(n,function(i,n){e.directive(n,i)})};return{initialize:e}});

@@ -1,0 +1,1 @@
+define(["text!templates/main/pages/home/template.html","text!templates/main/pages/product-info/template.html"],function(t,e){return{home:{route:"/home",template:t,controller:"homeController"},productWithProperty:{route:"/product/:idOrEanOrName",template:e,controller:"productInfoController"},product:{route:"/product",template:e,controller:"productInfoController"}}});

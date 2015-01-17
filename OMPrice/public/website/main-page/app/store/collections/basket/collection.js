@@ -1,0 +1,1 @@
+define(["backbone","../products/model/model"],function(e,n){var o=e.Collection.extend({model:n});return new o});

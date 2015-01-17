@@ -1,0 +1,36 @@
+{
+    "name": "OMPrice",
+    "version": "0.0.1",
+    "main": "server.js",
+    "dependencies": {
+        "express": "4.x",
+        "body-parser": "*",
+        "method-override": "*",
+        "mongoose": "3.8.17",
+        "async": "*",
+        "tiny": "*",
+        "lodash": "*",
+        "async": "*",
+        "node-gyp": "0.5.1",
+        "node-xlsx": "*",
+        "cookie-parser": "*",
+        "promise": "*",
+        "mv": "*",
+        "multer": "*",
+        "express-session": "*",
+        "path": "*",
+        "gulp": "*",
+        "gulp-less": "*",
+        "gulp-requirejs": "*",
+		"gulp-uglify":"*",
+        "gulp-imagemin": "*",
+        "imagemin-pngcrush": "*",
+        "gulp-clean": "*",
+        "mocha": "*",
+        "should": "*",
+        "supertest": "*"
+    },
+    "scripts": {
+        "start": "server.js"
+    }
+}

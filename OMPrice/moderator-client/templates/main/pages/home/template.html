@@ -1,0 +1,28 @@
+<nav class="home-navigation panel panel-default">
+    <div class="panel-body" product-filters></div>
+</nav>
+<article class="home-content-container">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="home-content">
+                <div class="product" ng-repeat="productItem in productList" product="productItem"  product-item></div>
+            </div>
+            <nav class="home-content-pagination">
+                <ul class="pagination">
+                    <li name="prevPageLink"><a ng-click="prevPage()" href="#/home">&laquo;</a></li>
+                    <li ng-repeat="page in pages" ng-class="{active: page == currentPage}">
+                        <a ng-if="(page != '...' && page != '..')" href="#/home" data-page="{{page}}" ng-click="goPage($event)">
+                            {{page}}
+                            <span ng-if="page == currentPage" class="sr-only">(current)</span>
+                        </a>
+                        <a ng-if="(page=='...' || page == '..')" href="#/home" ng-click="page== '..' ? prevPage(page) : nextPage(page)">{{page}}</a>
+                    </li>
+                    <li name="nextPageLink"><a ng-click="nextPage()" href="#/home">&raquo;</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</article>
+<aside class="changes-requests panel panel-default">
+    <div class="panel-body"  product-changes-schedule></div>
+</aside>
