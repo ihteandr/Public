@@ -1,4 +1,4 @@
-Public
+Private
 ======
 
-contain my public code sources
+contain my private code sources
