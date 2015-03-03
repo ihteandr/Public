@@ -6,13 +6,13 @@ define([], function(){
                 if(response.status == "success"){
                     var data;
                     if(response.data && response.data.products){
-                        data = response.data.products[0];
+                        data = response.data.products;
                     } else {
                         data = response.data;
                     }
                     deferred.resolve(data);
                 } else {
-                    deferred.reject(response.error);
+                    deferred.reject(response);
                 }
             }).error(function(response){
                 deferred.reject(response);

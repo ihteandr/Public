@@ -30,20 +30,28 @@ define([
                 }
                 setTimeout(function(){self._spinService.startSpin($("form.not-initialized")[0]);}, 200);
                 this._model.fetchProduct(query).then(function(){
-                    self._model.fetchTmpProduct(query.ean).then(function(){
-                        self._spinService.stopSpin();
-                        if(self._model.get("tmpProduct").ean){
-                            self._model.set("currentProduct", self._model.get("tmpProduct"));
-                        } else {
-                            self._model.set("currentProduct", self._model.get("product"));
-                        }
-                        if(self._model.get("product")){
-                            self._model.get("currentProduct").images = self._model.get("product").images;
-                        }
-                    });
+                    if(query.ean){
+                        self._model.fetchTmpProduct(query.ean).then(function(){
+                            self._spinService.stopSpin();
+                            if(self._model.get("tmpProduct").ean){
+                                self._model.set("currentProduct", self._model.get("tmpProduct"));
+                            } else {
+                                self._model.set("currentProduct", self._model.get("product"));
+                            }
+                            if(self._model.get("product")){
+                                self._model.get("currentProduct").images = self._model.get("product").images;
+                            }
+                            if(!self._model.get("currecntProduct")){
+                                self.$scope.notFound = true;
+                            }
+                        });
+                    } else if(!self.$scope.product && !self.$scope.products){
+                        self.$scope.notFound = true;
+                    }
                 });
             } else {
                 this.$scope.product = {};
+                this.$scope.isNew = true;
                 this.$scope.tmpProduct = {};
                 this.$scope.currentProduct = {
                     details: {
@@ -323,6 +331,8 @@ define([
                         self._model.get("currentProduct").images = product.images;
                     }
                     self._model.set("newImages", []);
+                    self._model.isNew = false;
+                    self._model.storage.isNew = false;
                     self.$scope.$broadcast("resetUploader");
                     $.growl({
                         message: "Изменения Сохранены"

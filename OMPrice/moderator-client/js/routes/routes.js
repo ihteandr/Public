@@ -1,7 +1,8 @@
 define([
     "text!templates/main/pages/home/template.html",
-    "text!templates/main/pages/product-info/template.html"
-],function(HomeTemplate, ProductInfoTemplate){
+    "text!templates/main/pages/product-info/template.html",
+    "text!templates/main/pages/shops/template.html"
+],function(HomeTemplate, ProductInfoTemplate, ShopsTemplate){
   return {
       home: {
           route: "/home",
@@ -17,6 +18,11 @@ define([
           route: "/product",
           template: ProductInfoTemplate,
           controller: "productInfoController"
+      },
+      shops: {
+          route: "/shops",
+          template: ShopsTemplate,
+          controller: "shopsController"
       }
   };
 })

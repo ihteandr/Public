@@ -1,15 +1,13 @@
 module.exports = {
     install: function(app, express){
-        var db_installer = require("../database/installer");
-        db_installer.install();
-
+        var mongoose = require('mongoose');
+        mongoose.connect(this.db_url);
         var _ = require("lodash");
         var bodyParser = require('body-parser');
         var multer = require('multer');
         var methodOverride = require('method-override');
-        var cookieParser = require("cookie-parser");
-        var session = require("express-session");
 
+        app.set('view engine', 'jade');
         app.use(multer({
             dest: './uploads/',
             rename: function (fieldname, filename) {
@@ -18,16 +16,10 @@ module.exports = {
         }));
         app.use(bodyParser());
         app.use(methodOverride());
-        app.use(cookieParser('S3CRE7'));
-        var hour = 24*60*60*1000;
-        app.use(session({
-            cookie: {
-                maxAge: hour
-            }
-        }));
 
         app.use("/", express.static(__dirname +'/../public/website/main-page'));
         app.use("/manufacturer", express.static(__dirname +'/../public/manufacturer'));
+        app.use("/manufacturer/register", express.static(__dirname +'/../public/manufacturer-register'));
         app.use("/moderator", express.static(__dirname +'/../public/moderator'));
         app.use(express.static(__dirname +'/../public'));
 
@@ -42,15 +34,26 @@ module.exports = {
             res.status(500).json({status: "fail", error: err});
         });
 
+        var User = require("../database/models/user/model");
         app.use(function(req, res, next){
             var availablePaths = [
                 "/login",
-                "/checkAuthorization"
+                "/logout",
+                "/checkAuthorization",
+                "/user",
+                "/manufacturer/register"
                 ];
-            if(req.session.auth || _.contains(availablePaths, req.path) || req.originalMethod == 'GET'){
+            if(_.contains(availablePaths, req.path) || req.originalMethod.toLowerCase() == 'get'){
                 next();
             } else {
-                res.status(401).send({status: "fail", error: {message: "You are not authorized"}});
+                User.findOne({_id: req.param("user")}).exec(function(err, user){
+                    if(user){
+                        req.user = user;
+                        next();
+                    }else{
+                        res.status(401).send({status: "fail", error: {message: "You are not authorized"}});
+                    }
+                });
             }
         });
     },

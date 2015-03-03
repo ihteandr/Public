@@ -2,6 +2,9 @@
   width: 705px;
   margin-left: 10px;
 }
+.product-info .search-products-list ul {
+  list-style-type: none;
+}
 .product-info .not-initialized {
   height: 500px;
 }
@@ -314,4 +317,7 @@ body {
 }
 .main-header .search {
   width: 500px;
+}
+.brand {
+  margin-top: -5px;
 }

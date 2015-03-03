@@ -5,9 +5,10 @@ define([
     'directives/home/product/directive',
     'directives/product-info/product-eans/directive',
     'directives/product-info/product-image/directive',
-    'directives/product-info/product-image/upload-images/directive'
+    'directives/product-info/product-image/upload-images/directive',
+    './shops/card/directive'
 ], function(_, ProductChangesScheduleDirective, ProductFiltersDirective, ProductDirective,
-            ProductEansDirective, ProductImageDirective, UploadImagesDirective){
+            ProductEansDirective, ProductImageDirective, UploadImagesDirective, ShopCardDirective){
   "use strict";
 
   var directives = {
@@ -16,7 +17,8 @@ define([
       "productItem": ProductDirective,
       "productEans": ProductEansDirective,
       "productImage": ProductImageDirective,
-      "uploadImages": UploadImagesDirective
+      "uploadImages": UploadImagesDirective,
+      "shopCard": ShopCardDirective
   };
 
   var initialize = function (angModule) {

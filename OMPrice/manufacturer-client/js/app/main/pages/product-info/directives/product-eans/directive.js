@@ -18,11 +18,11 @@ define([
                 template: EanCreateTemplate,
                 controller: "popupCreateBaseController",
                 inputs: {
-                    title: "Create EAN",
+                    title: "Создать EAN",
                     validator: function(value){
-                        return value.length == 13;
+                        return (/\d+/igm).test(value);
                     },
-                    errorMsg: "EAN must have 13 length"
+                    errorMsg: "EAN может содержать только цифры"
                 }
             }).then(function(modal){
                 $(modal.element[0]).modal();

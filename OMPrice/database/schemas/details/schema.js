@@ -4,6 +4,7 @@ var Schema = mongoose.Schema;
 var schema = new Schema({
     brand: {type: Schema.Types.ObjectId, ref: "Brand"},
     manufacturer: {type: String},
+    product: {type: Schema.Types.ObjectId, ref: "Product"},
     manufacturerCapacity: {type: String},
     bulk: {type: String},
     bulkUnit: {type: String},
@@ -14,7 +15,7 @@ var schema = new Schema({
     address: {type: String},
     summary: {type: String},
     consist: {type: String},
-    nutritional: {type: Schema.Types.ObjectId, ref:"Nutritional"},
-}, { autoIndex: false});
+    nutritional: {type: Schema.Types.ObjectId, ref:"Nutritional"}
+});
 
 module.exports = schema;

@@ -2,11 +2,16 @@ define([], function(){
     return ["$http", "$q", function($http, $q){
         var checkAuthorization = function(){
             var deferred = $q.defer();
-            $http.post("/checkAuthorization").success(function(response){
-                deferred.resolve(response);
-            }).error(function(response){
-                deferred.reject(response);
-            });
+            if(App.user){
+                deferred.resolve(App.user);
+            } else {
+                deferred.resolve()
+            }
+//            $http.post("/checkAuthorization").success(function(response){
+//                deferred.resolve(response);
+//            }).error(function(response){
+//                deferred.reject(response);
+//            });
             return deferred.promise;
         };
 

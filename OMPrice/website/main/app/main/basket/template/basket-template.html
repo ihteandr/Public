@@ -1,3 +1,82 @@
 <div>
-    <p>BASKET</p>
+    <p class="basket-label">Корзина</p>
+    <div>
+        <lable>Мои магазины</lable>
+        <div class="dropdown basket-shop-list">
+            <button type="button" data-toggle="dropdown" class="dropdown-toggle">
+                <%= typeof selectedShop == "undefined" ? "Undefined" : selectedShop.name %>
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <% for(var i = 0, shop; shop = shops[i]; i++){ %>
+                    <li data-shop="<%= shop._id %>">
+                        <a rote="menuitem"  href="javascript:void(0);"><%= shop.name %></a>
+                    </li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+    <div class="basket-products">
+        <ul class="products-table">
+            <% var prices = [];%>
+            <% var items = [];%>
+
+            <%for(var name in basket){%>
+                <li>
+                    <p class="products-section"> <%= name %> </p>
+                    <% for(var i = 0, item; item = basket[name][i];i++ ){ items.push(items);%>
+                        <ul class="product-row">
+                            <li class="product-name">
+                                <span><%= item.product.name %></span>
+                            </li>
+                            <li class="product-count">
+                                <span><%= item.count %> шт</span>
+                            </li>
+                            <li class="product-price">
+                                <span>
+                                    <%var price = _.find(item.prices, function(price){return price.shop._id == selectedShop._id})%>
+                                    <%if(typeof price != "undefined"){prices.push(price * item.count)%>
+                                        <%= price.price * item.count %> <%= price.priceUnit %>
+                                    <% } else { %>
+                                        Нет
+                                    <% } %>
+                                </span>
+                            </li>
+                        </ul>
+                    <% } %>
+                </li>
+            <%}%>
+            <li>
+                <ul class="total-price">
+                    <li class="name">
+                        <span><%= typeof selectedShop == "undefined" ?  "Undefined" : selectedShop.name %></span>
+                    </li>
+                    <li class="price">
+                        <span><%= prices.length ? _.reduce(prices, function(memo, num){ return memo + num; }) : "Нет" %></span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <div class="price-in-shops">
+            <ul>
+                <% for(var i = 0, shop; shop = shops[i]; i++) {%>
+                    <li>
+                        <ul class="price-in-shops-row">
+                            <li class="name"><%= shop.name %></li>
+                            <li class="price">
+                                <% var prices = _.filter(_.map(items, function(item){ %>
+                                    <%var price = _.find(item.prices, function(price){return price.shop._id == shop._id}); %>
+                                    <% if(typeof price != "undefined"){ %>
+                                        <% price.price *= item.count;%>
+                                    <% } %>
+                                    <%return price;%>
+                                <%}), function(price){return typeof price != "undefined";}); %>
+                                <%= prices.length ? _.reduce(_.pluck(prices, "price"),function(memo, num){return memo + num;}) : "Нет" %>
+                            </li>
+                        </ul>
+                    </li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
 </div>

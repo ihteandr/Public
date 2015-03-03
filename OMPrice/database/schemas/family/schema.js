@@ -7,6 +7,6 @@ var schema = new Schema({
     market: {type: Schema.Types.ObjectId, ref:"Market"},
     section: {type: Schema.Types.ObjectId, ref:"Section"},
     category: {type: Schema.Types.ObjectId, ref:"Category"}
-}, { autoIndex: false});
+});
 
 module.exports = schema;

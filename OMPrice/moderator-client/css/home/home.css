@@ -1,3 +1,6 @@
+.brand {
+  margin-top: -5px;
+}
 .home-navigation {
   position: absolute;
   width: 257px;
@@ -40,7 +43,6 @@
   position: absolute;
   width: 15%;
   text-align: center;
-  height: 300px;
   top: 0;
   right: 0;
   min-height: 300px;

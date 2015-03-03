@@ -3,7 +3,13 @@ var Schema = mongoose.Schema;
 
 var schema = new Schema({
     user: {type: Schema.Types.ObjectId, ref: "User"},
-    products: {type: [{type: Schema.Types.ObjectId, ref: "User"}], default: []}
+    items: {
+        type: [{
+            product: {type: Schema.Types.ObjectId, ref: "Product"},
+            count: {type: Number}
+        }],
+        default: []
+    }
 });
 
 module.exports = schema;

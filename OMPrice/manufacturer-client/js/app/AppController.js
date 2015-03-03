@@ -10,7 +10,7 @@ define(['BaseController'], function(BaseController){
         checkAuthorization: function(){
             var self = this;
             this._service.checkAuthorization().then(function(response){
-                if(response.data){
+                if(response){
                     self.$scope.template.url = "templates/main/template.html";
                     self.$route.reload();
                 } else {
@@ -24,7 +24,9 @@ define(['BaseController'], function(BaseController){
             this._super();
             this.$scope.template = {};
         },
-        enterMain: function(){
+        enterMain: function(event, options){
+            window.App.user = options.user;
+            console.log("App ", window.App);
             this.$scope.template.url = "templates/main/template.html";
         },
         defineListeners: function(){

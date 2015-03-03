@@ -1,12 +1,14 @@
 var Product = require("../../database/models/product/model"),
     Basket = require('../../database/models/basket/model');
+
 var routes = {};
+
 
 routes.get = {
     '/basket': function(req, res, next){
         var user = req.param("user");
         if(user){
-            Basket.find({user: user}).populate("products products.prices products.prices.shop").(function(err, basket){
+            Basket.find({user: user}).populate("items.product items.product.prices items.product.prices.shop").exec(function(err, basket){
                 if(err){
                     next(err);
                 } else {
@@ -57,4 +59,5 @@ module.exports = {
         }
     }
 };
+
 

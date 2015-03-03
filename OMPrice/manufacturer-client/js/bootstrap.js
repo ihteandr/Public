@@ -11,7 +11,7 @@ require.config({
         "Angular": "libs/angular/angular-main",
         "spin": "libs/spin/lib",
         "templates": "../templates",
-        "Bootstrap": 'libs/bootstrap/js/bootstrap.min',
+        "Bootstrap": 'libs/bootstrap/js/bootstrap',
         "BootstrapGrowl": 'libs/bootstrap/js/bootstrap-growl.min'
     },
     shim:{

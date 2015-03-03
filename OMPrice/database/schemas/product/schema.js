@@ -1,3 +1,4 @@
+var Promise = require("promise");
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var fs = require("fs");
@@ -11,6 +12,8 @@ var schema = new Schema({
     category: {type: Schema.Types.ObjectId, ref: "Category"},
     family: {type: Schema.Types.ObjectId, ref: "Family"},
     name: {type: String, index: true},
+    shops: {type: [{type: Schema.Types.ObjectId, ref: "Shop"}], default: []},
+    isByMass: {type: Boolean, default: false},
     details: {type: Schema.Types.ObjectId, ref: 'Details'},
     ean: {type: String},
     status: {type:String, enum:["s1", "s2", "s3", "s4"], default: "s1"},
@@ -26,10 +29,43 @@ var schema = new Schema({
     rating: {type: Number, default: 0},
     addingInBasket: {type: Number, default: 0},
     created: {type: Date, default: Date.now}
-}, { autoIndex: false});
+});
 
 function randomNumber(){
-    return Date.now();
+    return Date.now().toString() + Math.floor((Math.random() * 1000000) + 1);
+};
+
+schema.methods.saveImages = function(images){
+    var self = this;
+    return new Promise(function(resolve, reject){
+        var path = "public/images/" + self._id;
+        var fn = function(){
+            var image = null;
+            while(image = images.pop()){
+                var name = randomNumber();
+                var imagePath = path + "/" + name;
+                fs.writeFileSync(imagePath, image);
+                self.images.push({
+                    path: imagePath,
+                    name: name,
+                    temp: false
+                });
+            }
+            self.save(function(err){
+                if(err){
+                    reject(err);
+                } else {
+                    resolve(self);
+                }
+            })
+        };
+        if(!fs.existsSync(path)){
+            fs.mkdirSync(path,  0777);
+            fn(path, callback);
+        }else{
+            fn(path, callback);
+        }
+    });
 };
 
 schema.methods.setImages = function(infos, callback){
@@ -64,7 +100,7 @@ schema.methods.setImage = function(info, callback){
         path = "public/images/" + this._id;
     }
     var fn = function(path, callback){
-        var imagePath = path + "/" + info.name;
+        var imagePath = path + "/" + randomNumber() + info.name;
         fs.unlink(imagePath, function(){
             mv(info.image.path, imagePath, function(err) {
                 if(err){

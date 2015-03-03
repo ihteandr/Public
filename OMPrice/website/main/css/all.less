@@ -10,6 +10,10 @@ html, body{
   font-family:FontAwesome;
 }
 
+.error-message{
+  color: red;
+}
+
 #header{
   .products-details{
     margin-top: 15px;
@@ -78,20 +82,38 @@ html, body{
   #main-content{
     margin-left: 258px;
     margin-right: 270px;
+    ul{
+      list-style-type: none;
+      padding: 0;
+    }
     .product-list{
       overflow: hidden;
       .product{
         float: left;
-        height: 200px;
+        height: 330px;
         width: 160px;
         .product-image{
           width: 95%;
-          height: 150px;
+          height: 200px;
           text-align: center;
           img{
             width: 100%;
-            height: 100%;
+            height: 150px;
           }
+        }
+        .product-shop-list{
+          height: 65px;
+          padding: 0;
+        }
+        .options{
+          li{
+            float: left;
+            margin-right: 5px;
+          }
+          height: 25px;
+        }
+        .count{
+          width: 25px;
         }
       }
     }
@@ -101,10 +123,138 @@ html, body{
     right: 0;
     top: 0;
     width: 270px;
-  }
+    .basket-label{
+      text-align: center;
+    }
+    .basket-shop-list{
+      margin: -20px 0 0px 90px;
+    }
+    .basket-products{
+      ul{
+        list-style-type: none;
+      }
+      .products-table{
+        padding: 0;
+        .products-section{
+          background-color: grey;
+          color: white;
+          padding-left: 15px;
+        }
+        .product-row{
+          padding-left: 11px;
+          overflow: hidden;
+          border-bottom: 1px solid grey;
+          li{
+            float: left;
+          }
+          .product-name{
+            width: 180px;
+            max-width: 180px;
+            text-overflow:ellipsis;
+            overflow:hidden;
+          }
+          .product-count{
+            width: 35px;
+            text-align: center;
+          }
+          .product-price{
+            text-align: right;
+            width: 40px;
+          }
+        }
+        .total-price{
+          padding-left: 11px;
+          li{
+            width: 100px;
+            float: left;
+          }
+          overflow: hidden;
 
+          .price{
+            width: 50px;
+            text-align: right;
+          }
+          .name{
+            width: 150px;
+            text-align: center;
+          }
+        }
+      }
+      .price-in-shops{
+        max-height: 76px;
+        overflow: hidden;
+        overflow-y: scroll;
+        ul{
+          list-style-type: none;
+          padding-left: 11px;
+        }
+        .price-in-shops-row{
+          padding: 0;
+          li{
+            float: left;
+          }
+          overflow: hidden;
+          .price{
+            text-align: right;
+            width: 50px;
+          }
+          .name{
+            width: 150px;
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
 }
 
+#search-box{
+  width:500px;
+  #search-input{
+    width: 431px;
+  }
+  #search{
+    float: right;
+    margin-top: -30px;
+  }
+}
+
+#map-caption{
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  margin-left: 40%;
+}
+#map{
+  width: 100%;
+  position: fixed;
+  top:0;
+  padding: 25px;
+  background-color: white;
+  .options-bar{
+    position: absolute;
+    top: 65px;
+    right: 40px;
+    display: inline-block;
+    z-index: 1;
+    .radius-box{
+      list-style-type: none;
+    }
+    .accept{
+      margin-left: 100px;
+    }
+  }
+  .container{
+    border-radius: 3px;
+    border: 1px solid grey;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(0, 0, 0, 0.05);
+    width: 100%;
+    height: 100%;
+  }
+}
+.nav-pagination{
+  text-align: center;
+}
 
 /*!
  *  Font Awesome 4.2.0 by @davegandy - http://fontawesome.io - @fontawesome

@@ -37,7 +37,7 @@ define([
                 }, App.errorHandler);
 
                 ProductFiltersService.getBrands().then(function(data){
-                    $scope.brnads = data;
+                    $scope.brands = data;
                 }, App.errorHandler);
 
                 $scope.$watch("selectedMarket", function(newValue){
@@ -90,7 +90,7 @@ define([
 
                 $scope.$watch("selectedBrand", function(newValue, oldValue){
                     if(oldValue != newValue){
-                        $scope.$emit("brandSelected", {country: $scope.selectedBrand});
+                        $scope.$emit("brandSelected", {brand: $scope.selectedBrand});
                     }
                 });
             }],

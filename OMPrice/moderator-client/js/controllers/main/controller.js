@@ -4,7 +4,8 @@ define([
     return ["$scope", "$route", "MainService", function($scope, $route, MainService){
         $scope.template = {};
         MainService.checkAuthorization().then(function(response){
-            if(response.data){
+            if(response){
+                window.App.user = response.data;
                 $scope.template.url = "templates/main/page.html";
             } else {
                 $scope.template.url = "templates/main/login.html";
@@ -39,7 +40,7 @@ define([
             }
             if(checker){
                 return {
-                    username: user,
+                    login: user,
                     password: password
                 }
             } else {
@@ -57,7 +58,7 @@ define([
                 MainService.tryLogin(data).then(function(response){
                     if(response.status == "success"){
                         $scope.authorized = App.authorized = true;
-                        App.user = response.data;
+                        window.App.user = response.data;
                         $scope.template.url = "templates/main/page.html";
                         $route.reload();
                     } else {

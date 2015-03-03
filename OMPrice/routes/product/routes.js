@@ -24,12 +24,19 @@ function createProduct(data){
                         if(err){
                             reject(err);
                         } else {
-                            nutritional.product = _product;
-                            nutritional.save(function(err){
+                            _details.product = _product;
+                            _details.save(function(err){
                                 if(err){
-                                    reject(err)
+                                    reject(err);
                                 } else {
-                                    resolve(_product);
+                                    nutritional.product = _product;
+                                    nutritional.save(function(err){
+                                        if(err){
+                                            reject(err)
+                                        } else {
+                                            resolve(_product);
+                                        }
+                                    });
                                 }
                             });
                         }
@@ -40,7 +47,7 @@ function createProduct(data){
         var saveCountry = function(){
             return new Promise(function(resolve, reject){
                 if(data.details.country){
-                    Country.find({name: data.details.country}, function(err, country){
+                    Country.findOne({name: data.details.country}, function(err, country){
                         if(err){
                             reject(err);
                         } else {
@@ -75,7 +82,7 @@ function createProduct(data){
             });
         };
         if(data.details.brand){
-            Brand.find({name: data.details.brand}, function(err, brand){
+            Brand.findOne({name: data.details.brand}, function(err, brand){
                 if(err){
                     reject(err);
                 }else{
@@ -189,15 +196,25 @@ function updateProduct(data){
                                     }
                                 });
                             } else {
-                                var brand = new Brand(data.details.brand);
-                                brand.save(function(err){
+                                Brand.findOne({name: brand}, function(err, brandModel){
                                     if(err){
                                         reject(err);
                                     } else {
-                                        data.details.brand = brand._id;
-                                        saveCountry(data);
+                                        if(brandModel){
+                                            data.details.brand = brandModel._id;
+                                        } else {
+                                            var brand = new Brand(data.details.brand);
+                                            brand.save(function(err){
+                                                if(err){
+                                                    reject(err);
+                                                } else {
+                                                    data.details.brand = brand._id;
+                                                    saveCountry(data);
+                                                }
+                                            })
+                                        }
                                     }
-                                })
+                                });
                             }
                         } else {
                             saveCountry(data);
@@ -323,6 +340,9 @@ routes.get = {
     },
     "/products/:id": function(req, res, next){
         var id = req.param("id");
+        if(id.length != 24){
+            return res.status(200).send({status: "fail", error: {message: "Wrong ID"}}).end();
+        }
         Product.findById(id).
             populate("details").
             populate("prices").
@@ -365,9 +385,14 @@ routes.get = {
         var market = req.param("market");
         var section = req.param("section");
         var category = req.param("category");
+        var country = req.param("country");
+        var brand = req.param("brand");
+        var brands = req.param("brands");
+        var shops = req.param("shops");
         var offset = req.param("offset");
         var limit = req.param("limit");
         var query = {};
+        var detailsQuery = {};
         var options = {
             limit: limit || 25,
             skip: offset || 0
@@ -390,106 +415,108 @@ routes.get = {
         if(category){
             query.category = category;
         }
-        if(name){
-            query.name = name;
+        if(brand){
+            detailsQuery.brand = brand;
         }
-        Product.find(query).
-            skip(options.skip).
-            limit(options.limit).
-            populate("details").
-            populate("prices").
-            exec(function(err, products){
-                if(err){
-                    console.error("Problem with find product by ean ", err);
-                    next(err);
-                } else {
-                    var fn = function(){
-                        Product.count(query, function(err, total){
-                            if(err){
-                                console.error("Error with counting products ", err);
-                                next(new Error("Error with counting products"));
-                            } else {
-                                res.status(200).send({
-                                    status: "success",
-                                    data: {
-                                        products:products,
-                                        total: total
-                                    }
-                                }).end();
-                            }
-                        });
-                    };
-                    if(full){
-                        async.eachSeries(products, function(product, cb){
-                            product.details.populate("nutritional brand country prices", function(err){
+        if(brands){
+            detailsQuery.brand = {$in: brands};
+        }
+        if(country){
+            detailsQuery.country = country;
+        }
+        if(name){
+            query.name = new RegExp(name, "igm");
+        }
+        if(shops){
+            query.shops = { $in: shops };
+        }
+        function fetchProducts(){
+            Product.find(query).
+                skip(options.skip).
+                limit(options.limit).
+                populate("details prices").
+                exec(function(err, products){
+                    if(err){
+                        console.error("Problem with find product by ean ", err);
+                        next(err);
+                    } else {
+                        var fn = function(){
+                            Product.count(query, function(err, total){
                                 if(err){
-                                    console.error("Problem with populate nutritional, brand, country by ean ", err);
-                                    cb(err);
+                                    console.error("Error with counting products ", err);
+                                    next(new Error("Error with counting products"));
                                 } else {
-                                    var options = {
-                                        path: "prices.shop",
-                                        model: "Shop"
-                                    };
-                                    Product.populate(product, options, function(err){
-                                        if(err){
-                                            console.log("Problem with populate prices shop");
-                                            cb(err);
-                                        } else {
-                                            cb(null)
+                                    res.status(200).send({
+                                        status: "success",
+                                        data: {
+                                            products:products,
+                                            total: total
                                         }
-                                    });
+                                    }).end();
                                 }
                             });
-                        }, function(err){
-                            if(err){
-                                next(err);
-                            } else {
-                                fn();
-                            }
-                        });
-                    } else {
-                        fn();
+                        };
+                        if(full){
+                            async.eachSeries(products, function(product, cb){
+                                product.details.populate("nutritional brand country prices", function(err){
+                                    if(err){
+                                        console.error("Problem with populate nutritional, brand, country by ean ", err);
+                                        cb(err);
+                                    } else {
+                                        return cb(null);
+                                        var options = {
+                                            path: "prices.shop",
+                                            model: "Shop"
+                                        };
+                                        Product.populate(product, options, function(err){
+                                            if(err){
+                                                console.log("Problem with populate prices shop");
+                                                cb(err);
+                                            } else {
+                                                cb(null)
+                                            }
+                                        });
+                                    }
+                                });
+                            }, function(err){
+                                if(err){
+                                    next(err);
+                                } else {
+                                    fn();
+                                }
+                            });
+                        } else {
+                            fn();
+                        }
                     }
+                });
+        }
+        if(detailsQuery.brand || detailsQuery.country){
+            Details.find(detailsQuery, function(err, detailsCollection){
+                if(err){
+                    next(err);
+                }else{
+                    var products = _.map(detailsCollection, function(details){
+                        return details.product;
+                    });
+                    query._id = {$in: products};
+                    fetchProducts();
                 }
             });
+        } else {
+            fetchProducts();
+        }
     }
 };
 
 routes.post = {
     "/products/image": function(req, res, next){
-        if(req.session.permissions > 1) {
+        if(req.user.permissions > 1) {
             var image = req.files.image;
             var imageName = req.param("imageName");
             var _id = req.param("_id");
             saveImage(_id, {image: image, name: imageName}).then(function(product){
                 res.status(200).json({status: "success", data: product.images});
-            }, function(err){
-                console.log("Error with save image ", err);
-                next(err);
-            });
-        } else {
-            res.status(200).json({status: "fail", error: new Error("You don't have a permissions")}).end();
-        }
-    },
-    "/products/tmp/image": function(req, res, next){
-        if(req.session.permissions > 0) {
-            var image = req.files.image;
-            var _id = req.param("id");
-            var imageName = req.param("imageName");
-            console.log("/product/temp/images, eans -", req.param("eans"));
-            var eans = req.param("eans").join();
-            saveImage(_id, {image: image, name: imageName, temp: true}).then(function(product){
-               Tiny("database/temp/products.tiny", function(err, db){
-                    db.update(eans, {images: product.images}, function(err){
-                        if(err){
-                            console.error("Error with updateTiny db ", err);
-                            next(err);
-                        } else {
-                            res.status(200).json({status: "success", data: product.images}).end();
-                            db.close();
-                        }
-                    });
-                });
             }, function(err){
                 console.log("Error with save image ", err);
                 next(err);
@@ -513,7 +540,7 @@ routes.post = {
                 family: req.param("family"),
                 status: req.param("status")
             },
-            user: req.session.user,
+            user: req.user,
             date: Date.now()
         };
         console.log("details ", data.product.details);
@@ -521,7 +548,7 @@ routes.post = {
         for(var i in files){
             files_arr.push(files[i]);
         }
-        if(req.session.permissions > 0){
+        if(req.user.permissions > 0){
             var product = data.product;
             var fn = function(){
                 Tiny("database/temp/products.tiny", function(err, db){
@@ -577,7 +604,7 @@ routes.post = {
         for(var i in files){
             files_arr.push(files[i]);
         }
-        if(req.session.permissions > 1){
+        if(req.user.permissions > 1){
             createProduct(data).then(function(product){
                 async.eachSeries(files_arr, function(file, cb){
                     saveImage(product._id, {image: file, name: file.fieldname}).then(function(productModel){
@@ -622,7 +649,7 @@ routes.put = {
         for(var i in files){
             files_arr.push(files[i]);
         }
-        if(req.session.permissions  > 0){
+        if(req.user.permissions  > 0){
             var product = data.product;
             var fn = function(){
                 Tiny("database/temp/products.tiny", function(err, db){
@@ -662,13 +689,13 @@ routes.put = {
     },
     "/products/temp/accept":function(req, res, next){
         var ean = req.param("ean").split(",")[0];
-        if(req.session.permissions > 1){
+        if(req.user.permissions > 1){
            Tiny("database/temp/products.tiny", function(err, db){
-                db.get(ean, function(err, result){
+               db.get(ean, function(err, result){
                     if(err){
                         console.error("Problem with get temp product fromTiny db :", err);
                         next(err);
-                    } else {
+                    } else if(result) {
                         var fn = function(product){
                             product.acceptImages(function(err){
                                 if(err){
@@ -676,7 +703,6 @@ routes.put = {
                                 } else {
                                     res.status(200).json({status: "success", data: product}).end();
                                     db.remove(ean, function(err){
-                                        console.log("remove ", ean);
                                         if(err){
                                             console.info("Problem with remove temp product from temp db : ", err);
                                         }
@@ -686,20 +712,20 @@ routes.put = {
                             });
                         };
                         if(result.product._id){
-                            console.log("update product ", result.product);
                             updateProduct(result.product).then(function(product){
                                 fn(product);
                             }, function(err){
                                 next(err);
                             });
                         } else {
-                            console.log("create product ", result.product);
                             createProduct(result.product).then(function(product){
                                 fn(product);
                             }, function(err){
                                 next(err);
                             });
                         }
+                    } else {
+                        res.status(500).send({status: "fail", error:{message: "Data been lose"}}).end();
                     }
                 });
             });
@@ -725,7 +751,7 @@ routes.put = {
         for(var i in files){
             files_arr.push(files[i]);
         }
-        if(req.session.permissions > 1){
+        if(req.user.permissions > 1){
             updateProduct(data).then(function(product){
                 if(files_arr.length == 0){
                     res.status(200).json({status: "success", data: product}).end();
@@ -753,7 +779,7 @@ routes.put = {
         }
     },
     "/product/temp/image/accept": function(req, res, next){
-        if(req.session.permissions > 1) {
+        if(req.user.permissions > 1) {
             var _id = req.param("_id");
             var name = req.param(name);
             Product.findOne({_id: _id}, function (err, product) {
@@ -779,7 +805,7 @@ routes.put = {
 
 routes.del = {
     "/product/image": function(req, res, next){
-        if(req.session.permissions > 1){
+        if(req.user.permissions > 1){
             var _id = req.param("_id");
             var name = req.param("name");
             deleteImage(_id, name).then(function(){
@@ -793,7 +819,7 @@ routes.del = {
         }
     },
     "product/temp/image": function(req, res, next){
-        if(req.session.permissions > 1) {
+        if(req.user.permissions > 1) {
             var _id = req.param("_id");
             var eans = req.param("eans").join();
             var name = req.param("name");

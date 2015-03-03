@@ -7,11 +7,12 @@ define(["Class"], function(Class){
         },
         checkAuthorization: function(){
             var deferred = this.$q.defer();
-            this.$http.post("/checkAuthorization").success(function(response){
-                deferred.resolve(response);
-            }).error(function(response){
-                deferred.reject(response);
-            });
+            deferred.resolve();
+//            this.$http.post("/checkAuthorization").success(function(response){
+//                deferred.resolve(response);
+//            }).error(function(response){
+//                deferred.reject(response);
+//            });
             return deferred.promise;
         }
 

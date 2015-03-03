@@ -73,7 +73,6 @@
         };
 
         this.run = function(){
-            console.log("run");
             addEventListeners();
         };
 

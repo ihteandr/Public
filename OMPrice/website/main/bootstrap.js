@@ -7,6 +7,7 @@ require.config({
         'cloud-router': 'libs/cloud-router/cloud-router',
         jquery: 'libs/jquery/jquery',
         tendina: 'libs/jquery/tendina',
+        twit_bootstrap: 'libs/bootstrap/js/bootstrap',
         text: 'libs/text'
     },
     shim: {
@@ -26,23 +27,31 @@ require.config({
         marionette: {
             deps: ['backbone', 'underscore', 'jquery'],
             exports: 'Marionette'
+        },
+        twit_bootstrap: {
+            deps: ['jquery']
         }
     },
     waitSeconds: 500
 });
-
 require([
     'jquery',
-    'app/app',
-    'config/config',
-    'router/router',
-    'router/system-router'
-], function($, App, Config, Router, SystemRouter){
-    $(function(){
-        Config.setup();
-        window.App = App;
-        App.router = new Router();
-        App.systemRouter = SystemRouter;
-        App.start();
+    'map/map-view'
+], function($, MapView){
+    $("body").append((new MapView).render().el);
+    require([
+        'jquery',
+        'app/app',
+        'config/config',
+        'router/router',
+        'router/system-router'
+    ], function($, App, Config, Router, SystemRouter){
+        $(function(){
+            Config.setup();
+            window.App = App;
+            App.router = new Router();
+            App.systemRouter = SystemRouter;
+            App.start();
+        });
     });
-})
+});

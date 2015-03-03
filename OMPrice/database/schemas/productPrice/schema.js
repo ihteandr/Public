@@ -6,4 +6,6 @@ var schema = new Schema({
     price: {type: Number},
     priceUnit: {type: String, default: "грв"},
     shop: {type: Schema.Types.ObjectId, ref: "Shop"}
-}, {autoIndex: false});
+});
+
+module.exports = schema;

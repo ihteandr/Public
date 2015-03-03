@@ -7,6 +7,6 @@ var schema = new Schema({
     carbohydrates: {type: Number},
     caloric: {type: Number},
     product: {type: Schema.Types.ObjectId, ref: "Product"}
-},{autoIndex: false});
+});
 
 module.exports = schema;

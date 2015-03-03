@@ -59,6 +59,7 @@ define(['Class', 'BaseModel'], function(Class, BaseModel){
                     self.storage.tmpProduct = data.product;
                 } else {
                     self.storage.tmpProduct = {};
+                    self.storage.isNew = true;
                     self.isNew = true;
                 }
             });
@@ -66,8 +67,20 @@ define(['Class', 'BaseModel'], function(Class, BaseModel){
 
         fetchProduct: function(query){
             var self = this;
-            return this._service.getProduct(query).then(function(product){
-                self.storage.product = product || {};
+            return this._service.getProduct(query).then(function(products){
+                if(products){
+                    if(typeof products.length != "undefined"){
+                        if(products.length > 1){
+                            self.storage.products = products;
+                        } else {
+                            self.storage.product = products[0] || {};
+                        }
+                    } else {
+                        self.storage.product = products;
+                    }
+                }
+            }, function(){
+                self.storage.notFound = true;
             });
         },
 

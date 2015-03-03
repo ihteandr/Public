@@ -1,6 +1,6 @@
 define("Angular", [
-    "order!libs/angular/angular.min",
-    "order!libs/angular/angular-route.min"
+    "libs/angular/angular",
+    "libs/angular/angular-route"
 ], function(){
     return angular;
 });

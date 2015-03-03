@@ -4,17 +4,20 @@ define([
     'underscore',
     'app/store/collections/markets/collection',
     'app/store/collections/brands/collection',
+    'app/store/collections/products/collection',
     'text!./template/navigation-template.html',
     'tendina'
-], function(Backbone, Marionette, _, Markets, Brands, NavigationTemplate){
+], function(Backbone, Marionette, _, Markets, Brands, Products, NavigationTemplate){
     var NavigationView = Marionette.ItemView.extend({
         template: function(serializedModel){
             return _.template(NavigationTemplate)(serializedModel);
         },
+        events: {
+            "change input[name=brands]": "onChangeBrands"
+        },
         markets: Markets,
         brands: Brands,
         templateHelpers: function(){
-            console.log("template helpers");
             return {
                 markets: this.markets.toJSON(),
                 brands: this.brands.toJSON()
@@ -22,16 +25,18 @@ define([
         },
         initialize: function(){
             var self = this;
-            this.markets.fetch({
-                success: function(){
-                    self.render();
-                }
+            this.markets.bind("reset", this.render, this);
+            this.brands.bind("reset", this.render, this);
+            this.markets.fetch({reset:true});
+            this.brands.fetch({reset:true});
+        },
+        onChangeBrands: function(event){
+            var brands = [];
+            this.$("input[name=brands]:checked").each(function(index, element){
+                brands.push(element.getAttribute("data-id"));
             });
-            this.brands.fetch({
-                success: function(){
-                    self.render();
-                }
-            });
+            Products.brands = brands;
+            Products.fetch({reset: true});
         },
         selectPath: function(market, section, category){
             this.$el.find("li[data-market=" + market + "]").addClass('selected').find("ul:first").css({display:"block"});

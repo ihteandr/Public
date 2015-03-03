@@ -3,6 +3,6 @@ var Schema = mongoose.Schema;
 
 var schema = new Schema({
     name: {type: String}
-}, {autoIndex: false});
+});
 
 module.exports = schema;

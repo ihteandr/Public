@@ -1,6 +1,6 @@
 define([
-    'order!libs/angular/angular',
-    'order!libs/angular/angular-route'
+    'libs/angular/angular',
+    'libs/angular/angular-route'
 ], function () {
 
     if (typeof _ != 'undefined') {

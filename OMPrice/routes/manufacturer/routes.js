@@ -1,3 +1,4 @@
+var User = require("../../database/models/user/model");
 var routes = {};
 
 routes.get = {
@@ -6,10 +7,40 @@ routes.get = {
     },
     "/manufacturer/checkAuthorization": function(req, res){
         res.redirect("/checkAuthorization");
+    },
+    "/manufacturer/register": function(req, res){
+        return res.render("manufacturer-register");
     }
 };
 
-routes.post = {};
+routes.post = {
+    "/manufacturer/register": function(req, res){
+        var password = req.param("password");
+        var data = {
+            name: req.param("name"),
+            company: req.param("company"),
+            username: req.param("username"),
+            email: req.param("email")
+        };
+
+        User.findOne().or([{username: data.username}, {email: data.email}]).exec(function(err, user){
+            if(!user){
+                user = new User(data);
+                user.hashedPassword = user.encrypt(password);
+                user.save(function(err){
+                    if(err){
+                        next(err);
+                    } else {
+                        return res.status(200).send({status: "success"}).end();
+                    }
+                });
+            } else {
+                res.status(200).send({status: "error", error: {message: "В системе уже есть пользователь с таким логином или электронной почтой, " +
+                    "пожалуйста пройдите назад и зарегестрируйтесь под другим логином или электронной почтой"}});
+            }
+        });
+    }
+};
 
 routes.put = {};
 

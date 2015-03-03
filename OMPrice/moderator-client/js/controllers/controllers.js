@@ -5,8 +5,11 @@ define([
     "controllers/main/header/controller",
     "controllers/main/pages/home/controller",
     "controllers/shared/modals/create/base/controller",
-    "controllers/main/pages/product-info/controller"
-], function ( _, routes, MainController, HeaderController, HomeController, BaseCreateController, ProductInfoController) {
+    "controllers/shared/modals/shop/edit/controller",
+    "controllers/main/pages/product-info/controller",
+    "controllers/main/pages/shops/controller"
+], function ( _, routes, MainController, HeaderController, HomeController,
+              BaseCreateController, EditShopController, ProductInfoController, ShopsController) {
     "use strict";
 
     var controllers = {
@@ -14,7 +17,9 @@ define([
         appController: MainController,
         homeController: HomeController,
         baseCreateController: BaseCreateController,
-        productInfoController: ProductInfoController
+        productInfoController: ProductInfoController,
+        shopsController: ShopsController,
+        editShopController: EditShopController
     };
 
     var setUpRoutes = function(angModule) {

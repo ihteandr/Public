@@ -12,54 +12,46 @@ routes.get = {
 };
 routes.post = {
     "/checkAuthorization": function(req, res, next){
-        if(req.session.user){
-            res.status(200).json({status:"success", data: req.session.user});
-        } else {
-            res.status(200).json({status: "fail", error: new Error("You are not a Authorized")});
-        }
+        res.status(200).json({status: "fail", error: new Error("You are not a Authorized")});
     },
     "/login": function(req, res, next){
         var data = {
-            username: req.param("username"),
+            login: req.param("login"),
             password: req.param("password")
         };
-        User.findOne({username: data.username}, function(err, user){
-            if(err){
-                console.error("Problem with find user by username ", err);
-                next(err);
-            } else {
-                if(user){
-                    if(user.checkPassword(data.password)){
-                        var userData = {
-                            _id: user._id,
-                            name: user.name,
-                            email: user.email
-                        };
-                        req.session.auth = true;
-                        req.session.user = userData;
-                        req.session.permissions = user.permissions;
-                        res.status(200).json({
-                            status: "success",
-                            data: data
-                        });
-                    } else {
-                        res.status(200).json({
-                            status: "fail",
-                            error: new Error("Username or password is wrong!")
-                        });
-                    }
-                } else {
+        console.log("data ", data);
+        User.findOne().or([{username: data.login}, { email: data.login }]).exec(function(err, user){
+            console.log(arguments);
+            if(err) return next(err);
+            if(user){
+                if(user.checkPassword(data.password)){
+                    var userData =  {
+                        _id: user._id,
+                        name: user.name,
+                        email: user.email,
+                        username: user.username
+                    };
                     res.status(200).json({
+                        status: "success",
+                        data: userData
+                    }).end();
+                } else {
+                    return res.status(200).json({
                         status: "fail",
-                        error: new Error("Username or password is wrong!")
-                    });
+                        error: {message:"Username or password is wrong!"}
+                    }).end();
                 }
+            } else {
+                return res.status(200).json({
+                    status: "fail",
+                    error: {message: "Username or password is wrong!"}
+                }).end();
             }
         });
     },
     "/logout": function(req, res){
         req.session.destroy();
-        res.status(200).json({status: "success"});
+        res.status(200).json({status: "success"}).end();
     }
 };
 
@@ -74,11 +66,17 @@ module.exports = {
         var productRoutes = require("../routes/product/routes");
         var moderatorRoutes = require("../routes/moderator/routes");
         var manufacturerRoutes = require("../routes/manufacturer/routes");
+        var basketRoutes = require("../routes/basket/routes");
+        var shopRoutes = require("../routes/shop/routes");
         var utilsRoutes = require("../routes/utils/routes");
+        var userRoutes = require("../routes/user/routes");
         parserRoutes.install(app);
         productRoutes.install(app);
         moderatorRoutes.install(app);
         manufacturerRoutes.install(app);
+        basketRoutes.install(app);
+        shopRoutes.install(app);
         utilsRoutes.install(app);
+        userRoutes.install(app);
     }
 };

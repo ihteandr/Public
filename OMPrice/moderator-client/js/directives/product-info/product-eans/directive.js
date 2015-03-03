@@ -31,6 +31,8 @@ define([
                     if($scope.tmpEan){
                         $scope.tmpEans = _.difference($scope.tmpEan.split(","), $scope.eans);
                         updateCurrentEan();
+                    } else {
+                        $scope.tmpEans = [];
                     }
                 });
                 $scope.addEAN = function(){
@@ -38,16 +40,16 @@ define([
                         template: EanCreateTemplate,
                         controller: "baseCreateController",
                         inputs: {
-                            title: "Create EAN",
+                            title: "Создать EAN",
                             validator: function(value){
-                                return value.length == 13;
+                                return (/\d+/igm).test(value);
                             },
-                            errorMsg: "EAN must have 13 length"
+                            errorMsg: "EAN может содержать только цифры"
                         }
                     }).then(function(modal){
                         modal.element.modal();
                         console.log("element ", modal.element);
-                        setTimeout(function(){$(modal.element[0]).find("input").focus();}, 200);
+                        setTimeout(function(){$(modal.element[0]).find("input")[0].focus();}, 200);
                         modal.close.then(function(result){
                             if(result.answer == 1){
                                 $scope.eans.push(result.name);

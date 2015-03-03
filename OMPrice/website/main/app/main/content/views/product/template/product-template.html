@@ -5,4 +5,30 @@
             <%= name %>
         </figcaption>
     </figure>
+    <div class="product-shop-list">
+        <ul>
+            <% if(prices.length == 0){ %>
+                <li><label>Данных о ценнах нет</label></li>
+            <% } %>
+            <% for(var i = 0; i < 3 && i < prices.length; i++) {%>
+                <li>
+                    <label class="shop"><%= prices[i].shop %></label>
+                    <span class="price"><%= prices[i].price %></span>
+                </li>
+            <% } %>
+        </ul>
+    </div>
+    <div class="options form-group">
+        <ul>
+            <li>
+                <button name="add-product" class="btn btn-success">Добавить товар</button>
+            </li>
+            <li>
+                <input name="product-count" class="form-control count" value="1"/>
+            </li>
+            <li>
+                <span class="bulk-unit"><%= details.bulkUnit %></span>
+            </li>
+        </ul>
+    </div>
 </div>

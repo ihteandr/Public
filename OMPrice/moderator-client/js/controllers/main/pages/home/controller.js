@@ -90,7 +90,7 @@ define([
             }
             var numbers = _.filter(pages, function(page){return !isNaN(page);});
             numbers.push(1);
-            if(Math.max.apply(Math, numbers) < lastPage){
+            if(Math.max.apply(Math, numbers) < lastPage - 1){
                 pages.push("...");
             }
             pages.push(lastPage);

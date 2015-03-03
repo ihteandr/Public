@@ -3,12 +3,17 @@
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="javascript:;">
-                    <img alt="LOGO">
+                    <img alt="OMPrice">
                 </a>
             </div>
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <form class="navbar-form navbar-left">
+                    <div class="form-group address">
+                        <% if(address){ %>
+                            <p><%= address %></p>
+                        <% } %>
+                    </div>
                     <div class="form-group products-details">
                         <%if(market && section && category){%>
                             <p><%=market%> - <%= section %> - <%= category %></p>
@@ -16,8 +21,25 @@
                     </div>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="javascript:;" cloud-href="/signIn">SignIn</a></li>
-                    <li><a href="javascript:;" cloud-href="/register">Register</a></li>
+                    <%if(mode == "logged"){%>
+                        <li>
+                            <div class="dropdown">
+                                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                                    Привет <%= user.name %> !
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a role="menuitem" tabindex="-1" href="javascript:;">Указать место положение</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li><a href="javascript:;" cloud-href="/signOut">Выйти</a></li>
+                    <% } else { %>
+                        <li><a id="signIn" href="javascript:;" cloud-href="/signIn">Войти</a></li>
+                        <li><a href="javascript:;" cloud-href="/register">Регистрация</a></li>
+                    <% } %>
                 </ul>
             </div>
         </div>

@@ -3,6 +3,14 @@ define([], function(){
         module.config(["$httpProvider", function($httpProvider){
             var interceptor = ["$q", function($q){
                 function request(config){
+                    if(window.App && window.App.user){
+                        var suffix = "&user=" + App.user._id;
+                        if(config.url.indexOf("?") == -1){
+                            config.url += "?"
+                        }
+                        config.url += suffix;
+
+                    }
                     return config;
                 }
                 function requestError(rejection){
@@ -13,7 +21,6 @@ define([], function(){
                 }
                 function responseError(rejection){
                     if(rejection.status == "401"){
-                        console.log("status ", "401");
                         window.location.reload();
                     }
                     return $q.reject(rejection);

@@ -27,7 +27,7 @@ define(['jquery', "BaseController"], function($, BaseController){
             }
             if(checker){
                 return {
-                    username: user,
+                    login: user,
                     password: password
                 }
             } else {

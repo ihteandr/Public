@@ -28,6 +28,14 @@ define(["jquery", "Class"], function($, Class){
             });
         },
         request: function(config){
+            if(window.App && window.App.user){
+                var suffix = "&user=" + App.user._id;
+                if(config.url.indexOf("?") == -1){
+                    config.url += "?"
+                }
+                config.url += suffix;
+
+            }
             return config;
         },
         requestError: function(rejection){
@@ -40,7 +48,7 @@ define(["jquery", "Class"], function($, Class){
             this.handleError(rejection.data);
 
             if(rejection.status == "401"){
-                window.location.reload();
+                console.log("rejection ", rejection);//window.location.reload();
             }
             return this.$q.reject(rejection);
         }

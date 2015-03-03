@@ -7,7 +7,7 @@ require.config({
         spin: 'libs/spin/lib',
         jcarousel: 'libs/jquery/jcarousel/lib',
         Lodash: 'libs/lodash/lodash.min',
-        Bootstrap: 'libs/bootstrap/js/bootstrap.min',
+        Bootstrap: 'libs/bootstrap/js/bootstrap',
         BootstrapGrowl: 'libs/bootstrap/js/bootstrap-growl.min',
         Angular: 'libs/angular/angular-main',
         templates: './../templates'

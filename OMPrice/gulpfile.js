@@ -1,11 +1,26 @@
+var CoffeeScript = require("coffee-script");
+CoffeeScript.register();
 var gulp = require("gulp"),
+    path = require("path"),
+    compile = require("gulp-compile-js"),
+    concat = require("gulp-concat"),
+    concatCss = require("gulp-concat-css"),
     less = require("gulp-less"),
-	path = require("path"),
-    rj = require("gulp-requirejs"),
+    rjs = require("gulp-requirejs"),
 	uglify = require("gulp-uglify"),
     imageMin = require('gulp-imagemin'),
     pngcrush = require('imagemin-pngcrush'),
-    clean = require("gulp-clean");
+    clean = require("gulp-clean"),
+    html_replace = require("gulp-html-replace"),
+    replace = require("gulp-replace-task");
+
+var paths = {
+    moderator: {},
+    manufacturer: {},
+    website: {
+        main: {}
+    }
+}
 
 //------------------------------------- moderator client tasks --------------------------------------------
 gulp.task("moderator-client:clean", function(){
@@ -14,12 +29,49 @@ gulp.task("moderator-client:clean", function(){
 });
 
 gulp.task('moderator-client:jsCompress', function() {
-    gulp.src('./moderator-client/**/*.js')
-        .pipe(uglify())
-        .pipe(gulp.dest('./public/moderator/'))
+    paths.moderator.js = "js/built." + Date.now() + ".js";
+    rjs({
+        name: "main",
+        baseUrl: './moderator-client/js',
+        include: 'require.js',
+        out: paths.moderator.js,
+        paths: {
+            jquery: 'libs/jquery/jquery-min',
+            moment: 'libs/moment/lib',
+            spin: 'libs/spin/lib',
+            jcarousel: 'libs/jquery/jcarousel/lib',
+            Lodash: 'libs/lodash/lodash.min',
+            Bootstrap: 'libs/bootstrap/js/bootstrap',
+            BootstrapGrowl: 'libs/bootstrap/js/bootstrap-growl.min',
+            Angular: 'libs/angular/angular-main',
+            templates: './../templates'
+        },
+        priority: [
+            "jquery",
+            "moment",
+            "Lodash",
+            "Angular"
+        ],
+        shim:{
+            "Bootstrap":{
+                deps:['jquery']
+            },
+            "BootstrapGrowl":{
+                deps:['jquery']
+            },
+            "jcarousel":{
+                deps: ['jquery']
+            }
+        },
+        optimizeCss: 'standard',
+        removeCombined: true,
+        findNestedDependencies: true,
+        optimizeAllPluginResources: true
+    }).pipe(uglify()).pipe(gulp.dest('./public/moderator/'));
 });
 
 gulp.task("moderator-client:lessBuild", function(){
+    paths.moderator.css = Date.now();
     gulp.src("./moderator-client/css/bootstrap/*.css")
         .pipe(gulp.dest("./public/moderator/css/bootstrap"));
     gulp.src("./moderator-client/css/**/*.less")
@@ -27,13 +79,22 @@ gulp.task("moderator-client:lessBuild", function(){
             paths: [path.join(__dirname, "less", "includes")],
             compress: true
         }))
-        .pipe(gulp.dest("./public/moderator/css"));
+        .pipe(gulp.dest("./public/moderator/css/" + paths.moderator.css));
 });
 
 gulp.task("moderator-client:markup", function(){
     gulp.src("./moderator-client/templates/**/*.html")
         .pipe(gulp.dest("./public/moderator/templates"));
     gulp.src("./moderator-client/index.html")
+        .pipe(replace({
+            patterns: [{
+                match: "js/built.js",
+                replacement: paths.moderator.js
+            },{
+                match: "path",
+                replacement: paths.moderator.css
+            }]
+        }))
         .pipe(gulp.dest("./public/moderator"));
 });
 
@@ -60,12 +121,42 @@ gulp.task("manufacturer-client:clean", function(){
 });
 
 gulp.task('manufacturer-client:jsCompress', function() {
-    gulp.src('./manufacturer-client/**/*.js')
-        .pipe(uglify())
-        .pipe(gulp.dest('./public/manufacturer/'))
+    paths.manufacturer.js = "js/built." + Date.now() + ".js"
+    rjs({
+        name: "bootstrap",
+        baseUrl: './manufacturer-client/js',
+        include: 'require.js',
+        out: paths.manufacturer.js,
+        paths: {
+            "Class": "libs/class",
+            "BaseController": "base/BaseController",
+            "BaseRouter": "base/BaseRouter",
+            "EventDispatcher": "base/EventDispatcher",
+            "BaseModel": "base/BaseModel",
+            "jquery": "libs/jquery/jquery.min",
+            "jcarousel": "libs/jquery/jcarousel/lib",
+            "lodash": "libs/lodash/lodash.min",
+            "Angular": "libs/angular/angular-main",
+            "spin": "libs/spin/lib",
+            "templates": "../templates",
+            "Bootstrap": 'libs/bootstrap/js/bootstrap',
+            "BootstrapGrowl": 'libs/bootstrap/js/bootstrap-growl.min'
+        },
+        shim:{
+            "Bootstrap": {
+                deps: ['jquery']
+            },
+            "BootstrapGrowl": {
+                deps: ['Bootstrap', 'jquery']
+            }
+        },
+        findNestedDependencies: true,
+        optimizeAllPluginResources: true
+    }).pipe(uglify()).pipe(gulp.dest('./public/manufacturer/'));
 });
 
 gulp.task("manufacturer-client:lessBuild", function(){
+    paths.manufacturer.css = Date.now();
     gulp.src("./manufacturer-client/css/bootstrap/*.css")
         .pipe(gulp.dest("./public/manufacturer/css/bootstrap"));
     gulp.src("./manufacturer-client/css/**/*.less")
@@ -73,14 +164,22 @@ gulp.task("manufacturer-client:lessBuild", function(){
             paths: [path.join(__dirname, "less", "includes")],
             compress: true
         }))
-        .pipe(gulp.dest("./public/manufacturer/css"));
+        .pipe(gulp.dest("./public/manufacturer/css/" + paths.manufacturer.css));
 });
 
 gulp.task("manufacturer-client:markup", function(){
     gulp.src("./manufacturer-client/templates/**/*.html")
         .pipe(gulp.dest("./public/manufacturer/templates"));
     gulp.src("./manufacturer-client/index.html")
-        .pipe(gulp.dest("./public/manufacturer"));
+        .pipe(replace({
+            patterns: [{
+                match: "js/built.js",
+                replacement: paths.manufacturer.js
+            },{
+                match: "path",
+                replacement: paths.manufacturer.css
+            }]
+        })).pipe(gulp.dest("./public/manufacturer"));
 });
 
 gulp.task("manufacturer-client:imagesMin", function(){
@@ -97,7 +196,38 @@ gulp.task("manufacturer-client:fonts", function(){
     gulp.src("./manufacturer-client/fonts/*")
         .pipe(gulp.dest("./public/manufacturer/fonts"));
 });
+// ----------------------------------- manufacturer register ------------------
 
+gulp.task("manufacturer-register:clean", function(){
+    gulp.src("./public/manufacturer-register")
+        .pipe(clean());
+});
+
+gulp.task("manufacturer-register:jsCompress", function(){
+    var basePth = "./manufacturer-register/js/";
+    var files = [
+        basePth + "libs/jquery-1.11.2.min.js",
+        basePth + "libs/bootstrap.js",
+        basePth + "libs/ripples.min.js",
+        basePth + "libs/material.min.js",
+        basePth + "script.coffee"
+    ]
+    gulp.src(files).
+        pipe(compile({coffee:{bar:true}})).
+        pipe(concat("all.js")).
+        pipe(gulp.dest("./public/manufacturer-register/js/"));
+});
+
+gulp.task("manufacturer-register:cssCompress", function(){
+    gulp.src("./manufacturer-register/css/**/*.css").
+        pipe(concatCss("all.css")).
+        pipe(gulp.dest("./public/manufacturer-register/css/"));
+});
+
+gulp.task("manufacturer-register:font", function(){
+    gulp.src("./manufacturer-register/fonts/*")
+        .pipe(gulp.dest("./public/manufacturer-register/css/fonts"));
+});
 // ----------------------------------- web site main --------------------------
 
 gulp.task("website-main:clean", function(){
@@ -106,12 +236,51 @@ gulp.task("website-main:clean", function(){
 });
 
 gulp.task("website-main:jsCompress", function(){
-    gulp.src('./website/main/**/*.js')
-        .pipe(uglify())
-        .pipe(gulp.dest('./public/website/main-page/'))
+    paths.website.main.js = "js/built." + Date.now() + ".js"
+    rjs({
+        name: "bootstrap",
+        baseUrl: './website/main',
+        include: 'libs/require.js',
+        out: paths.website.main.js,
+        paths: {
+            backbone: 'libs/backbone/backbone',
+            marionette: 'libs/marionette/marionette',
+            underscore: 'libs/underscore/underscore',
+            'cloud-router': 'libs/cloud-router/cloud-router',
+            jquery: 'libs/jquery/jquery',
+            tendina: 'libs/jquery/tendina',
+            twit_bootstrap: 'libs/bootstrap/js/bootstrap',
+            text: 'libs/text'
+        },
+        shim: {
+            backbone: {
+                deps: ['jquery', 'underscore'],
+                exports: 'Backbone'
+            },
+            tendina: {
+                deps: ['jquery']
+            },
+            underscore: {
+                exports: '_'
+            },
+            jquery: {
+                exports: '$'
+            },
+            marionette: {
+                deps: ['backbone', 'underscore', 'jquery'],
+                exports: 'Marionette'
+            },
+            twit_bootstrap: {
+                deps: ['jquery']
+            }
+        },
+        findNestedDependencies: true,
+        optimizeAllPluginResources: true
+    }).pipe(uglify()).pipe(gulp.dest('./public/website/main-page/'));
 });
 
 gulp.task("website-main:lessBuild", function(){
+    paths.website.main.css = Date.now()
     gulp.src("./website/main/css/fonts/*")
         .pipe(gulp.dest("./public/website/main-page/css/fonts"));
     gulp.src("./website/main/css/bootstrap/*.css")
@@ -121,22 +290,38 @@ gulp.task("website-main:lessBuild", function(){
             paths: [path.join(__dirname, "less", "includes")],
             compress: true
         }))
-        .pipe(gulp.dest("./public/website/main-page/css"));
+        .pipe(gulp.dest("./public/website/main-page/css/" + paths.website.main.css));
 });
 
 gulp.task("website-main:markup", function(){
     gulp.src("./website/main/**/*.html")
+        .pipe(replace({
+            patterns: [{
+                match: "js/built.js",
+                replacement: paths.website.main.js
+            },{
+                match: "path",
+                replacement: paths.website.main.css
+            }]
+        }))
         .pipe(gulp.dest("./public/website/main-page"));
 });
 
 gulp.task("website-main:imagesMin", function(){
-    gulp.src('./website.main/img/**/*')
+    gulp.src('./website/main/img/**/*')
         .pipe(imageMin({
             progressive: true,
             svgoPlugins: [{removeViewBox: false}],
 //            use: [pngcrush()]
         }))
         .pipe(gulp.dest('./public/website/main-page/img'));
+    gulp.src('./website/main/css/img/**/*')
+            .pipe(imageMin({
+                progressive: true,
+                svgoPlugins: [{removeViewBox: false}],
+    //            use: [pngcrush()]
+            }))
+            .pipe(gulp.dest('./public/website/main-page/css/img'));
 });
 
 gulp.task("watch", function(){
@@ -187,9 +372,16 @@ gulp.task("website-main:all", [
     "website-main:imagesMin"
 ]);
 
+gulp.task("manufacturer-register", [
+    "manufacturer-register:jsCompress",
+    "manufacturer-register:cssCompress",
+    "manufacturer-register:font"
+]);
+
 gulp.task("all", [
     "moderator-client:all",
     "manufacturer-client:all",
-    "website-main:all"
+    "website-main:all",
+    "manufacturer-register"
 ]);
 gulp.task("default", []);

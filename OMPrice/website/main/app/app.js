@@ -24,7 +24,6 @@ define([
 
     App.on('start', function(){
         Backbone.history.start();
-        this.systemRouter.run();
     });
     return App;
 });

@@ -20,11 +20,12 @@ module.exports = {
         var defaultUser = {
             username: "maksim",
             name: "Maksim",
+            email: "test@mail.com",
             permissions: 2
         };
         User.findOne({username: defaultUser.username}, function(err, user){
             if(!user){
-                var user = new User(defaultUser);
+                user = new User(defaultUser);
                 user.hashedPassword = user.encrypt("maksimpassword");
                 user.save(function(err){
                     if(err){

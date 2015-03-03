@@ -4,9 +4,10 @@ define([
 ], function($, BaseController){
     var HeaderController = BaseController.extend({
         $location: null,
-        init: function(scope, location){
+        init: function(scope, location, http){
             this._super(scope);
             this.$location = location;
+            this.$http = http;
         },
 
         search: function(){
@@ -19,6 +20,10 @@ define([
             }
         },
 
+        logout: function(){
+            this.$http.post("/logout").success(window.location.reload);
+        },
+
         defineScope: function(){
             this._super();
             this.$scope.search = this.search.bind(this);
@@ -29,7 +34,7 @@ define([
             console.log("Header Scope destroyed");
         }
     });
-    HeaderController.$inject = ["$scope", "$location"];
+    HeaderController.$inject = ["$scope", "$location", "$http"];
 
     return HeaderController;
 });

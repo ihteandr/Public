@@ -21,13 +21,23 @@ define([
                 }
 
                 setTimeout(function(){SpinService.startSpin($("form.not-initialized")[0]);},200);
-                ProductInfoService.getProduct(query).then(function(product){
+                ProductInfoService.getProduct(query).then(function(products){
                     var ean;
-                    $scope.product = product;
+                    if(products){
+                        if(typeof products.length != "undefined"){
+                            if(products.length > 1){
+                                $scope.products = products;
+                            } else {
+                                $scope.product = products[0];
+                            }
+                        } else {
+                            $scope.product = products;
+                        }
+                    }
 
                     if($scope.product){
                         ean = $scope.product.ean;
-                        _.each(product.prices, function(price){
+                        _.each($scope.product.prices, function(price){
                             price.date = moment(price.date, "DD/MM/YY");
                         });
                     } else if(query.ean) {
@@ -38,24 +48,33 @@ define([
                         };
                         ean = query.ean;
                     } else {
-                        App.errorHandler(new Error("Page not available"));
+                        $scope.notFound = true;
                     }
-                    ProductInfoService.getTmpProduct(ean).then(function(result){
-                        if(result && result.product){
-                            isRequest = true;
-                            $scope.tmpProduct = result.product;
-                            $scope.currentProduct = $scope.tmpProduct
-                        } else {
-                            $scope.tmpProduct = {};
-                            $scope.currentProduct = $scope.product;
-                        }
-                        $scope.currentProduct.images = $scope.product.images || [];
-                        ProductInfoService.getMarkets().then(function(results){
-                            SpinService.stopSpin();
-                            $scope.markets = results;
+                    if(ean){
+                        ProductInfoService.getTmpProduct(ean).then(function(result){
+                            if(result && result.product){
+                                isRequest = true;
+                                $scope.tmpProduct = result.product;
+                                $scope.currentProduct = $scope.tmpProduct
+                            } else {
+                                $scope.tmpProduct = {};
+                                $scope.currentProduct = $scope.product;
+                            }
+                            if(!$scope.currentProduct){
+                                $scope.notFound = true;
+                            }else {
+                                $scope.currentProduct.images = $scope.product.images || [];
+                            }
+                            ProductInfoService.getMarkets().then(function(results){
+                                SpinService.stopSpin();
+                                $scope.markets = results;
+                            }, App.errorHandler);
                         }, App.errorHandler);
-                    }, App.errorHandler);
-                }, App.errorHandler);
+                    }
+                },function(data){
+                    App.errorHandler(data);
+                    $scope.notFound = true;
+                });
             } else {
                 $scope.currentProduct = {
                     ean: null,
@@ -63,6 +82,7 @@ define([
                         nutritional: {}
                     }
                 };
+                $scope.isNew = true;
                 $scope.product = {
                     ean: null,
                     details: {

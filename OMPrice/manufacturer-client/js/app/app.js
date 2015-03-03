@@ -21,5 +21,6 @@ define([
             angular.bootstrap(document, ["app"]);
         }
     };
+    window.App = App;
     return App;
 });

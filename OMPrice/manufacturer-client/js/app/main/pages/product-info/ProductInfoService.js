@@ -12,7 +12,7 @@ define(["Class"], function(Class){
                 if(response.status == "success"){
                     var data;
                     if(response.data && response.data.products){
-                        data = response.data.products[0];
+                        data = response.data.products;
                     } else {
                         data = response.data;
                     }

@@ -4,24 +4,25 @@ var routes = require("./routes/main");
 var cluster = require('cluster');
 var numCPUs = require('os').cpus().length;
 var app;
-cluster.on('exit', function (worker) {
-    console.log('Worker ' + worker.id + ' died :(');
-    cluster.fork();
 
-});
 if (cluster.isMaster) {
     // Fork workers.
+    var db_installer = require("./database/installer");
+    db_installer.install();
+
+
     for (var i = 0; i < numCPUs; i++) {
-        console.log("fork ", i);
         cluster.fork();
     }
 
     cluster.on('exit', function(worker, code, signal) {
-        console.log('worker ' + worker.process.pid + ' died');
+        console.log('Worker ' + worker.id + ' died');
+        cluster.fork();
     });
 } else {
     app = express();
-
+    // Workers can share any TCP connection
+    // In this case its a HTTP server
     config.install(app, express);
     routes.install(app);
 

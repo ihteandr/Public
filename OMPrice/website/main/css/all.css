@@ -9,11 +9,15 @@ html,
 body {
   font-family: FontAwesome;
 }
+.error-message {
+  color: red;
+}
 #header .products-details {
   margin-top: 15px;
 }
 #main {
   position: relative;
+  top: -18px;
 }
 #main #nav-panel {
   position: absolute;
@@ -77,28 +81,171 @@ body {
   margin-left: 258px;
   margin-right: 270px;
 }
+#main #main-content ul {
+  list-style-type: none;
+  padding: 0;
+}
 #main #main-content .product-list {
   overflow: hidden;
 }
 #main #main-content .product-list .product {
   float: left;
-  height: 200px;
+  height: 330px;
   width: 160px;
 }
 #main #main-content .product-list .product .product-image {
   width: 95%;
-  height: 150px;
+  height: 200px;
   text-align: center;
 }
 #main #main-content .product-list .product .product-image img {
   width: 100%;
-  height: 100%;
+  height: 150px;
+}
+#main #main-content .product-list .product .product-shop-list {
+  height: 65px;
+  padding: 0;
+}
+#main #main-content .product-list .product .options {
+  height: 25px;
+}
+#main #main-content .product-list .product .options li {
+  float: left;
+  margin-right: 5px;
+}
+#main #main-content .product-list .product .count {
+  width: 25px;
 }
 #main #basket-panel {
   position: absolute;
   right: 0;
   top: 0;
   width: 270px;
+}
+#main #basket-panel .basket-label {
+  text-align: center;
+}
+#main #basket-panel .basket-shop-list {
+  margin: -20px 0 0px 90px;
+}
+#main #basket-panel .basket-products ul {
+  list-style-type: none;
+}
+#main #basket-panel .basket-products .products-table {
+  padding: 0;
+}
+#main #basket-panel .basket-products .products-table .products-section {
+  background-color: grey;
+  color: white;
+  padding-left: 15px;
+}
+#main #basket-panel .basket-products .products-table .product-row {
+  padding-left: 11px;
+  overflow: hidden;
+  border-bottom: 1px solid grey;
+}
+#main #basket-panel .basket-products .products-table .product-row li {
+  float: left;
+}
+#main #basket-panel .basket-products .products-table .product-row .product-name {
+  width: 180px;
+  max-width: 180px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+#main #basket-panel .basket-products .products-table .product-row .product-count {
+  width: 35px;
+  text-align: center;
+}
+#main #basket-panel .basket-products .products-table .product-row .product-price {
+  text-align: right;
+  width: 40px;
+}
+#main #basket-panel .basket-products .products-table .total-price {
+  padding-left: 11px;
+  overflow: hidden;
+}
+#main #basket-panel .basket-products .products-table .total-price li {
+  width: 100px;
+  float: left;
+}
+#main #basket-panel .basket-products .products-table .total-price .price {
+  width: 50px;
+  text-align: right;
+}
+#main #basket-panel .basket-products .products-table .total-price .name {
+  width: 150px;
+  text-align: center;
+}
+#main #basket-panel .basket-products .price-in-shops {
+  max-height: 76px;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+#main #basket-panel .basket-products .price-in-shops ul {
+  list-style-type: none;
+  padding-left: 11px;
+}
+#main #basket-panel .basket-products .price-in-shops .price-in-shops-row {
+  padding: 0;
+  overflow: hidden;
+}
+#main #basket-panel .basket-products .price-in-shops .price-in-shops-row li {
+  float: left;
+}
+#main #basket-panel .basket-products .price-in-shops .price-in-shops-row .price {
+  text-align: right;
+  width: 50px;
+}
+#main #basket-panel .basket-products .price-in-shops .price-in-shops-row .name {
+  width: 150px;
+  text-align: center;
+}
+#search-box {
+  width: 500px;
+}
+#search-box #search-input {
+  width: 431px;
+}
+#search-box #search {
+  float: right;
+  margin-top: -30px;
+}
+#map-caption {
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  margin-left: 40%;
+}
+#map {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  padding: 25px;
+  background-color: white;
+}
+#map .options-bar {
+  position: absolute;
+  top: 65px;
+  right: 40px;
+  display: inline-block;
+  z-index: 1;
+}
+#map .options-bar .radius-box {
+  list-style-type: none;
+}
+#map .options-bar .accept {
+  margin-left: 100px;
+}
+#map .container {
+  border-radius: 3px;
+  border: 1px solid grey;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(0, 0, 0, 0.05);
+  width: 100%;
+  height: 100%;
+}
+.nav-pagination {
+  text-align: center;
 }
 /*!
  *  Font Awesome 4.2.0 by @davegandy - http://fontawesome.io - @fontawesome

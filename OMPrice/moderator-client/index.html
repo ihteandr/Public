@@ -5,12 +5,12 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:500,400,300' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap/todc-bootstrap.min.css">
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/@@path/main.css">
 </head>
-<body ng-controller="appController">
-    <div ng-include src="template.url"></div>
+<body>
+    <div ng-controller="appController" class="main-view" ng-include src="template.url"></div>
 
-    <script data-main="js/main" src="js/require.js"></script>
-    <script src="js/libs/modernizr-2.0.6.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?language=ru"></script>
+    <script src="@@js/built.js"></script>
 </body>
 </html>
