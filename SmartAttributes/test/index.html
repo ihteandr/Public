@@ -1,0 +1,32 @@
+<html>
+	<head>
+		<script src="../smart-attributes.js"></script>
+	</head>
+	<body>
+		<div>
+			<label> Email </label>
+			<input smart-pattern="email"/>
+		</div>
+		<div>
+			<label> Number </label>
+			<input smart-pattern="number"/>
+		</div>
+		<div>
+			<label> Text </label>
+			<input smart-pattern="text"/>
+		</div>
+		<div>
+			<label> Phone </label>
+			<input smart-pattern="phone"/>
+		</div>
+		<div>
+			<label> No XSS </label>
+			<input smart-pattern="noXSS"/>
+		</div>
+		<div>
+			<label> Custom Pattern </label>
+			<input smart-pattern="/^\d/"/>
+		</div>
+		<script src="script.js"></script>
+	</body>
+</html>

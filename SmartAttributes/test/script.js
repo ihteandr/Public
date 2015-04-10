@@ -1,0 +1,1 @@
+SmartAttributes.run();
