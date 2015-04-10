@@ -31,7 +31,7 @@
 		},
 		_detachHandlers: function(){
 			for(var i = 0; i < this._attachedElements.length; i++){
-				this.addEventListened(this._attachedElements[i], "keyup", this._patternKeyUp);			
+				this.removeEventListened(this._attachedElements[i], "keyup", this._patternKeyUp);			
 			}
 			this._attachedElements = [];
 		},
@@ -48,15 +48,19 @@
 		},
 		_attachHandlers: function(){
 			var patternElements = document.querySelectorAll("[smart-pattern]");
-			console.log("elements", patternElements);
 			for(var i = 0; i < patternElements.length; i++){
 				patternElements[i].setAttribute("cache-value", patternElements[i].value);
 				this.addEventListened(patternElements[i], "keyup", this._patternKeyUp.bind(this));			
 			}
 			this._attachedElements = this._attachedElements.concat(patternElements);
 		},
+		restart: function(){
+			this._detachHandlers();
+			this._attachHandlers();
+		},
 		run: function(){
-			this._attachHandlers()
+			this._attachHandlers();
+			this.addEventListener(document.documentElement, "DomNodeInsert", this.restart.bind(this))
 		},
 		stop: function(){
 			this._detachHandlers();
