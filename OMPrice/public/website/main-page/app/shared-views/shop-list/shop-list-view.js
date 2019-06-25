@@ -1,1 +1,0 @@
-define(["marionette","../shop/shop-view","text!./template/shop-list-template.html"],function(e,t,i){var o=e.CompositeView.extend({template:i,childView:t,childViewContainer:".shop-list"});return o});

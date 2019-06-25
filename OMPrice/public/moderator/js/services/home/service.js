@@ -1,1 +1,0 @@
-define([],function(){return["$http","$q",function(t,e){function u(r){var o=e.defer();return u.timeout&&clearTimeout(u.timeout),u.timeout=setTimeout(function(){t.get("/products",{params:r}).success(function(t){"success"==t.status?o.resolve(t.data):o.reject(t)}).error(function(t){o.reject(t)}),clearTimeout(u.timeout)},1e3),o.promise}return{getProductList:u}}]});

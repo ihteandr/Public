@@ -1,1 +1,0 @@
-define(["lodash","./product-eans/directive","./product-image/directive","./product-image/upload-images/directive"],function(e,i,t,a){var c={productEans:i,productImage:t,uploadImages:a},d=function(i){e.each(c,function(e,t){i.directive(t,e)})};return{initialize:d}});

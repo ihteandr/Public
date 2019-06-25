@@ -1,1 +1,0 @@
-define(["spin"],function(n){return function(){function t(n){o.spin(n)}function i(){o.stop()}var o=new n;return{startSpin:t,stopSpin:i}}});

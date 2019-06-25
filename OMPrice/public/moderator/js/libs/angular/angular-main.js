@@ -1,1 +1,0 @@
-define(["order!libs/angular/angular","order!libs/angular/angular-route"],function(){return"undefined"!=typeof _&&_.noConflict(),"undefined"!=typeof $&&$.noConflict(),angular});

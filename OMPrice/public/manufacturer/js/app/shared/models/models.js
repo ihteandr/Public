@@ -1,1 +1,0 @@
-define(["lodash"],function(i){var n={},e=function(e){i.each(n,function(i,n){e.provider(n,i)})};return{initialize:e}});

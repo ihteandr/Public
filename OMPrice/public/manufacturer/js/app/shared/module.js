@@ -1,1 +1,0 @@
-define(["lodash","Angular","./controllers/controllers","./directives/directives","./filters/filters","./models/models","./services/services"],function(i,e,l,r,s,t,n){var a=e.module("shared",[]);return n.initialize(a),t.initialize(a),s.initialize(a),r.initialize(a),l.initialize(a),a});

@@ -1,1 +1,0 @@
-define(["lodash","./example/directive"],function(e,i){var n={example:i},t=function(i){e.each(n,function(e,n){i.directive(n,e)})};return{initialize:t}});

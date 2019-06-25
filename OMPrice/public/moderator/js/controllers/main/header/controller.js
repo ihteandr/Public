@@ -1,1 +1,0 @@
-define(["jquery"],function(e){return["$scope",function(n){n.search=function(){App.navigate("/product/"+e(".main-header .search").val())},n.keyUpHandler=function(e){13==e.keyCode&&n.search()}}]});

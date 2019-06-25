@@ -1,1 +1,0 @@
-define(["Class","BaseModel"],function(e,n){var t=n.extend({}),i=e.extend({instance:new t,$get:[function(){return this.instance}]});return i});

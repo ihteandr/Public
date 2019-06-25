@@ -1,1 +1,0 @@
-define(["backbone"],function(n){var t=function(){n.Collection.prototype.parse=function(n){return n.data}};return{setup:t}});

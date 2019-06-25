@@ -1,1 +1,0 @@
-define(["lodash","./modal/ModalService","./spin/SpinService"],function(i,e,n){var c={ModalService:e,SpinService:n},r=function(e){i.each(c,function(i,n){e.service(n,i)})};return{initialize:r}});
